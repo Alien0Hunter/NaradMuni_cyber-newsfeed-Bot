@@ -1,4 +1,4 @@
-# n8n CyberSecurity News → Telegram
+# n8n CyberSecurity News → Telegram - https://www.linkedin.com/posts/cbbobhate_bot-n8n-cybersecurity-activity-7360658077064343553-1uaM?utm_source=social_share_send&utm_medium=member_desktop_web&rcm=ACoAABkCw-wBhyGewVYWEa7ruGWgkRa2Vpefr8I 
 
 One‑click n8n workflow that polls several security RSS feeds and posts formatted headlines to Telegram.
 
@@ -45,3 +45,5 @@ git branch -M main
 git remote add origin <YOUR_REPO_URL>
 git push -u origin main
 ```
+
+🔒 Stay informed. Stay secure. Stay Connected https://www.linkedin.com/in/cbbobhate/
