@@ -1,0 +1,301 @@
+{
+  "name": "Cyber News \u2192 Telegram",
+  "nodes": [
+    {
+      "parameters": {
+        "triggerTimes": {
+          "item": [
+            {
+              "mode": "everyHour"
+            }
+          ]
+        }
+      },
+      "id": "CronHourly",
+      "name": "Cron (Hourly)",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [
+        -900,
+        -20
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://thehackernews.com/feeds/posts/default"
+      },
+      "id": "RSS_THN",
+      "name": "The Hacker News (RSS)",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1,
+      "position": [
+        -680,
+        -180
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://www.bleepingcomputer.com/feed/"
+      },
+      "id": "RSS_BC",
+      "name": "BleepingComputer (RSS)",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1,
+      "position": [
+        -680,
+        -20
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://krebsonsecurity.com/feed/"
+      },
+      "id": "RSS_Krebs",
+      "name": "Krebs on Security (RSS)",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1,
+      "position": [
+        -680,
+        140
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://www.cisa.gov/uscert/ncas/alerts.xml"
+      },
+      "id": "RSS_CISA",
+      "name": "CISA Alerts (RSS)",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1,
+      "position": [
+        -680,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "append"
+      },
+      "id": "Merge_AB",
+      "name": "Merge THN + BC",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2,
+      "position": [
+        -440,
+        -100
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "append"
+      },
+      "id": "Merge_ABC",
+      "name": "Merge + Krebs",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2,
+      "position": [
+        -220,
+        -20
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "append"
+      },
+      "id": "Merge_ABCD",
+      "name": "Merge + CISA",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2,
+      "position": [
+        0,
+        60
+      ]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "text",
+              "value": "\ud83d\udcf0 {{$json.title}}\\n\ud83d\udd17 {{$json.link}}\\n\ud83d\udd52 {{$json.isoDate || $json.pubDate}}"
+            }
+          ]
+        },
+        "options": {
+          "keepOnlySet": true
+        }
+      },
+      "id": "SetFormat",
+      "name": "Format Text",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        440,
+        60
+      ]
+    },
+    {
+      "parameters": {
+        "limit": 10
+      },
+      "id": "LimitItems",
+      "name": "Limit Items",
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        220,
+        60
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "{{$env.TELEGRAM_DEFAULT_CHAT_ID || \"@YourChannelUsernameOrUserId\"}}",
+        "text": "{{$json[\"text\"]}}",
+        "additionalFields": {
+          "parse_mode": "HTML"
+        }
+      },
+      "id": "TelegramSend",
+      "name": "Send to Telegram",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [
+        660,
+        60
+      ],
+      "credentials": {
+        "telegramApi": {
+          "id": "",
+          "name": "Telegram account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Cron (Hourly)": {
+      "main": [
+        [
+          {
+            "node": "The Hacker News (RSS)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "BleepingComputer (RSS)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Krebs on Security (RSS)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "CISA Alerts (RSS)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "The Hacker News (RSS)": {
+      "main": [
+        [
+          {
+            "node": "Merge THN + BC",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "BleepingComputer (RSS)": {
+      "main": [
+        [
+          {
+            "node": "Merge THN + BC",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge THN + BC": {
+      "main": [
+        [
+          {
+            "node": "Merge + Krebs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Krebs on Security (RSS)": {
+      "main": [
+        [
+          {
+            "node": "Merge + Krebs",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge + Krebs": {
+      "main": [
+        [
+          {
+            "node": "Merge + CISA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CISA Alerts (RSS)": {
+      "main": [
+        [
+          {
+            "node": "Merge + CISA",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge + CISA": {
+      "main": [
+        [
+          {
+            "node": "Limit Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit Items": {
+      "main": [
+        [
+          {
+            "node": "Format Text",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Text": {
+      "main": [
+        [
+          {
+            "node": "Send to Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}
