@@ -1,6 +1,15 @@
-# n8n CyberSecurity News → Telegram - https://www.linkedin.com/posts/cbbobhate_bot-n8n-cybersecurity-activity-7360658077064343553-1uaM?utm_source=social_share_send&utm_medium=member_desktop_web&rcm=ACoAABkCw-wBhyGewVYWEa7ruGWgkRa2Vpefr8I 
+# n8n CyberSecurity News Feeds → Telegram 
 
 One‑click n8n workflow that polls several security RSS feeds and posts formatted headlines to Telegram.
+https://www.linkedin.com/posts/cbbobhate_bot-n8n-cybersecurity-activity-7360658077064343553-1uaM?utm_source=social_share_send&utm_medium=member_desktop_web&rcm=ACoAABkCw-wBhyGewVYWEa7ruGWgkRa2Vpefr8I 
+
+🚨 Never Miss a Cyber Threat Again
+Meet my telegram AI-Powered Cybersecurity Threat & News hashtag#Bot 🤖 — built with hashtag#n8n + Telegram for instant updates.
+
+Get real-time alerts from:
+⚡ Hacker News
+⚡ BleepingComputer
+⚡ CISA Alerts
 
 ## Features
 - Sources: Hacker News (security), BleepingComputer, Krebs, CISA alerts
